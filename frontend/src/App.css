@@ -1,0 +1,394 @@
+/* ══════════════════════════════════════════════════════════
+   App.css  —  TradeLog Global Styles
+   Design tokens → reset → layout → shared table/button
+   styles → topbar → tabbar → FAB → icon buttons
+   ══════════════════════════════════════════════════════════ */
+
+/* ── DESIGN TOKENS ─────────────────────────────────────── */
+:root {
+  /* Surfaces */
+  --bg:   #0d0d0f;
+  --s1:   #141416;
+  --s2:   #1c1c1f;
+
+  /* Borders & glow */
+  --b:    #2a2a2e;
+  --glow: rgba(10, 132, 255, 0.35);
+
+  /* Foreground */
+  --fg:   #f0f0f5;
+  --muted:#888;
+
+  /* Semantic colours */
+  --g:    #34c759;   /* green / profit */
+  --r:    #ff453a;   /* red   / loss   */
+  --acc:  #0a84ff;   /* accent blue    */
+  --adim: rgba(10, 132, 255, 0.15);
+
+  /* Typography */
+  --mono: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+}
+
+/* ── RESET ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── TOPBAR ─────────────────────────────────────────────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: var(--s1);
+  border-bottom: 1px solid var(--b);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 12px;
+}
+
+.topbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbar__icon {
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  background: var(--adim);
+  border: 1px solid var(--glow);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topbar__title    { font-size: 16px; font-weight: 800; letter-spacing: 0.2px; }
+.topbar__subtitle { font-size: 10px; color: var(--muted); letter-spacing: 0.4px; }
+
+.topbar__date {
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ── TABBAR ──────────────────────────────────────────────── */
+.tabbar {
+  display: flex;
+  gap: 4px;
+  padding: 10px 16px;
+  background: var(--s1);
+  border-bottom: 1px solid var(--b);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabbar::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--muted);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.18s;
+  letter-spacing: 0.2px;
+}
+
+.tab-btn:hover { background: var(--s2); color: var(--fg); }
+
+.tab-btn--active {
+  background: var(--adim);
+  border-color: var(--glow);
+  color: var(--acc);
+}
+
+/* ── MAIN PAGE ───────────────────────────────────────────── */
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 16px 100px;
+}
+
+/* ── TABLE ───────────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--b);
+  white-space: nowrap;
+}
+
+td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--b);
+  vertical-align: middle;
+}
+
+tr:last-child td { border-bottom: none; }
+
+tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* Table cell modifiers */
+.td--mono   { font-family: var(--mono); font-size: 12px; }
+.td--muted  { color: var(--muted); font-size: 12px; }
+.td--subtle { color: var(--muted); font-size: 12px; font-style: italic; }
+.td--bold   { font-weight: 700; }
+.td--profit { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--g); }
+.td--loss   { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--r); }
+.td--empty  { text-align: center; color: var(--muted); font-size: 13px; padding: 32px; font-style: italic; }
+
+/* Scrip button in table */
+.scrip-btn {
+  background: var(--adim);
+  border: 1px solid var(--glow);
+  color: var(--acc);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: all 0.15s;
+}
+
+.scrip-btn:hover {
+  background: var(--acc);
+  color: #fff;
+}
+
+/* Icon action buttons (edit / delete in table rows) */
+.icon-btn {
+  background: var(--s2);
+  border: 1px solid var(--b);
+  color: var(--muted);
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  margin-left: 4px;
+}
+
+.icon-btn:hover           { background: var(--adim); color: var(--acc); border-color: var(--glow); }
+.icon-btn--del:hover      { background: rgba(255,69,58,0.12); color: var(--r); border-color: rgba(255,69,58,0.3); }
+
+/* ── CARD (shared between tabs) ──────────────────────────── */
+.card--np {
+  background: var(--s1);
+  border: 1px solid var(--b);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--b);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.card__title { font-size: 15px; font-weight: 700; color: var(--fg); }
+.card__sub   { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.card__count { font-family: var(--mono); font-size: 11px; color: var(--muted); white-space: nowrap; align-self: center; }
+
+/* ── STAT GRID (shared by Dashboard + Losing) ────────────── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 14px;
+}
+
+.stat-card {
+  background: var(--s1);
+  border: 1px solid var(--b);
+  border-radius: 14px;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color 0.2s, transform 0.15s;
+}
+
+.stat-card:hover { border-color: var(--glow); transform: translateY(-2px); }
+
+.stat-card__label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.stat-card__value {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--fg);
+  font-family: var(--mono);
+  margin: 2px 0;
+}
+
+.stat-card__sub { font-size: 11px; color: var(--muted); }
+
+/* ── VALUE COLOUR TOKENS ─────────────────────────────────── */
+.v--profit { color: var(--g); }
+.v--loss   { color: var(--r); }
+.v--blue   { color: var(--acc); }
+.v--purple { color: #bf5af2; }
+
+/* ── STATUS BADGES (shared) ──────────────────────────────── */
+.status-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 4px 9px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sb--holding { background: rgba(52,199,89,0.12);  color: var(--g);   border: 1px solid rgba(52,199,89,0.25); }
+.sb--sold    { background: rgba(10,132,255,0.12); color: var(--acc); border: 1px solid rgba(10,132,255,0.25); }
+
+/* ── SECTOR BADGES (Watchlist) ───────────────────────────── */
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.badge--banking  { background: rgba(10,132,255,0.12);  color: #0a84ff; border: 1px solid rgba(10,132,255,0.25); }
+.badge--finance  { background: rgba(191,90,242,0.12);  color: #bf5af2; border: 1px solid rgba(191,90,242,0.25); }
+.badge--it       { background: rgba(52,199,89,0.12);   color: var(--g); border: 1px solid rgba(52,199,89,0.25); }
+.badge--gold     { background: rgba(255,214,10,0.12);  color: #ffd60a; border: 1px solid rgba(255,214,10,0.25); }
+.badge--default  { background: var(--s2); color: var(--muted); border: 1px solid var(--b); }
+
+/* ── BUTTONS ─────────────────────────────────────────────── */
+.btn {
+  padding: 9px 16px;
+  border-radius: 9px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.15s;
+  letter-spacing: 0.2px;
+}
+
+.btn--primary { background: var(--acc); color: #fff; }
+.btn--primary:hover { background: #0071d9; }
+
+.btn--ghost {
+  background: var(--s2);
+  border: 1px solid var(--b);
+  color: var(--fg);
+}
+.btn--ghost:hover { border-color: var(--glow); }
+
+.btn--danger { background: rgba(255,69,58,0.12); border: 1px solid rgba(255,69,58,0.3); color: var(--r); }
+.btn--danger:hover { background: var(--r); color: #fff; }
+
+.btn--edit { background: var(--adim); border: 1px solid var(--glow); color: var(--acc); }
+.btn--edit:hover { background: var(--acc); color: #fff; }
+
+/* ── FAB ──────────────────────────────────────────────────── */
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 20px;
+  background: var(--acc);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 22px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(10,132,255,0.4);
+  transition: all 0.18s;
+  z-index: 200;
+  letter-spacing: 0.2px;
+}
+
+.fab:hover { background: #0071d9; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(10,132,255,0.5); }
+.fab:active { transform: translateY(0); }
+
+/* ── MS TAB LOCK ─────────────────────────────────────────── */
+.tab-btn--ms { opacity: 0.75; }
+.tab-lock    { font-size: 9px; margin-left: 4px; opacity: 0.6; }
+
+/* ── MS PROFILE PILL (topbar) ────────────────────────────── */
+.ms-profile-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--adim);
+  border: 1px solid var(--glow);
+  border-radius: 20px;
+  padding: 5px 12px 5px 9px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--acc);
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.ms-profile-pill:hover { background: rgba(10,132,255,0.25); }
+.ms-profile-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--g);
+  flex-shrink: 0;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .topbar__date { display: none; }
+  .tab-btn { padding: 7px 10px; font-size: 11px; }
+  .page { padding: 14px 10px 90px; }
+  th, td { padding: 8px 10px; }
+}
