@@ -283,3 +283,18 @@
   .modal--form,
   .modal--wide { padding: 16px; }
 }
+
+/* ── Investment group modal: per-row action buttons ── */
+.inv-row-actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.btn--xs {
+  padding: 3px 7px !important;
+  font-size: 11px !important;
+  border-radius: 6px !important;
+  line-height: 1.4;
+  min-width: 0;
+}
