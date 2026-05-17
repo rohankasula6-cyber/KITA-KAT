@@ -1,4 +1,5 @@
-﻿import { fmt, pctRet, holdDays, tradePL } from "../utils/helpers";
+﻿import { useState } from "react";
+import { fmt, pctRet, holdDays, tradePL } from "../utils/helpers";
 import "./modals.css";
 
 // -- TRADE DETAIL MODAL ------------------------------------------------
@@ -11,6 +12,8 @@ import "./modals.css";
 export function TradeDetailModal({ trade, onEdit, onDelete, onClose }) {
   const isGroup = Array.isArray(trade?.trades);
   const trades = isGroup ? trade.trades : [trade];
+  const [selectedId, setSelectedId] = useState(trades[0]?.id || null);
+  const selectedTrade = trades.find(t => t.id === selectedId) || trades[0] || null;
   const totalPL = trades.reduce((sum, t) => sum + (tradePL(t) || 0), 0);
   const pos = totalPL >= 0;
   const firstTrade = trades[0] || {};
@@ -41,6 +44,9 @@ export function TradeDetailModal({ trade, onEdit, onDelete, onClose }) {
                 </div>
               </div>
             </div>
+            <div style={{ marginBottom: 16, fontSize: 13, color: "var(--muted)", lineHeight: 1.5 }}>
+              Select one trade row below, then use the buttons at the bottom to edit or delete that trade.
+            </div>
             <div className="table-wrap">
               <table>
                 <thead>
@@ -55,8 +61,14 @@ export function TradeDetailModal({ trade, onEdit, onDelete, onClose }) {
                     const plRow = tradePL(t);
                     const posRow = plRow != null ? plRow >= 0 : null;
                     const hdRow = holdDays(t.boughtDate, t.soldDate);
+                    const selected = selectedTrade?.id === t.id;
                     return (
-                      <tr key={t.id}>
+                      <tr
+                        key={t.id}
+                        className={selected ? "selected-row" : ""}
+                        onClick={() => setSelectedId(t.id)}
+                        style={{ cursor: "pointer" }}
+                      >
                         <td>{t.qty}</td>
                         <td className="td--mono">{t.boughtDate || "—"}</td>
                         <td className="td--mono">{t.soldDate || "—"}</td>
@@ -115,16 +127,30 @@ export function TradeDetailModal({ trade, onEdit, onDelete, onClose }) {
         )}
 
         <div className="modal__actions">
-          {!isGroup && (
-            <button className="btn btn--danger" onClick={() => { onDelete(firstTrade.id); onClose(); }}>
-              🗑 Delete
-            </button>
-          )}
+          <button
+            className="btn btn--danger"
+            disabled={!selectedTrade}
+            onClick={() => {
+              if (!selectedTrade) return;
+              onDelete(selectedTrade.id);
+              onClose();
+            }}
+          >
+            🗑 Delete
+          </button>
           <div style={{ flex: 1 }} />
           <button className="btn btn--ghost" onClick={onClose}>Close</button>
-          {!isGroup && (
-            <button className="btn btn--edit" onClick={() => { onClose(); onEdit(firstTrade); }}>✏ Edit</button>
-          )}
+          <button
+            className="btn btn--edit"
+            disabled={!selectedTrade}
+            onClick={() => {
+              if (!selectedTrade) return;
+              onClose();
+              onEdit(selectedTrade);
+            }}
+          >
+            ✏ Edit
+          </button>
         </div>
       </div>
     </div>

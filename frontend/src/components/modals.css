@@ -149,6 +149,14 @@
   border-top: 1px solid var(--b);
 }
 
+/* ── Table selection for grouped journal rows ── */
+.selected-row {
+  background: rgba(96, 165, 250, 0.08);
+}
+.selected-row:hover {
+  background: rgba(96, 165, 250, 0.12);
+}
+
 /* ── P&L footer (TradeDetailModal) ── */
 .pl-footer {
   display: flex;
