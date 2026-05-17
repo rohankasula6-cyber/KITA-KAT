@@ -1,6 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import "./App.css";
 
+
+
 // ── Data & utilities ──────────────────────────────────────
 import { INIT_TRADES, INIT_INV, INIT_WATCH } from "./data/initialData";
 import { uid, nextTSN, findRecentTSN, loadFromStorage, saveToStorage } from "./utils/helpers";
@@ -85,12 +87,12 @@ export default function App() {
   const delWatch  = id      => setWatchlist(p => p.filter(w => w.id !== id));
 
   // ── Tab click: guard MS tabs behind login ─────────────────
-  const handleTabClick = id => {
-    const t = TABS.find(t => t.id === id);
-    if (t?.ms && !isLoggedIn) { setShowLogin(true); return; }
-    setShowLogin(false);
-    setTab(id);
-  };
+  // const handleTabClick = id => {
+  //   const t = TABS.find(t => t.id === id);
+  //   if (t?.ms && !isLoggedIn) { setShowLogin(true); return; }
+  //   setShowLogin(false);
+  //   setTab(id);
+  // };
 
   // After login succeeds, auto-navigate to the MS tab that triggered it
   const [pendingTab, setPendingTab] = useState(null);
@@ -205,9 +207,17 @@ export default function App() {
       )}
       {invDetail && (
         <InvDetailModal
-          inv={invDetail}
+          group={invDetail}
           onEdit={i => { setInvDetail(null); setInvForm({ mode: "edit", data: i }); }}
-          onDelete={id => { delInv(id); setInvDetail(null); }}
+          onDelete={id => {
+            delInv(id);
+            // Update group in-place: remove deleted entry; close if group is now empty
+            setInvDetail(prev => {
+              if (!prev) return null;
+              const remaining = prev.investments.filter(i => i.id !== id);
+              return remaining.length > 0 ? { ...prev, investments: remaining } : null;
+            });
+          }}
           onClose={() => setInvDetail(null)}
         />
       )}
