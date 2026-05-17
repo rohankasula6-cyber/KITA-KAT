@@ -1,8 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import "./App.css";
 
-
-
 // ── Data & utilities ──────────────────────────────────────
 import { INIT_TRADES, INIT_INV, INIT_WATCH } from "./data/initialData";
 import { uid, nextTSN, findRecentTSN, loadFromStorage, saveToStorage } from "./utils/helpers";
